@@ -1,0 +1,12 @@
+services:
+  ws-api:
+    build:
+      context: ./api/
+    ports:
+      - "5000:5000"
+
+  ws-int-test:
+    build:
+      context: ./integration_test/
+    depends_on:
+      - ws-api

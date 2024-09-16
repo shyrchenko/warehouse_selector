@@ -1,0 +1,26 @@
+[
+  {
+    "taskId": "0",
+    "tenantName": "ULVEGR",
+    "taskName": "validate_schema",
+    "startDatetime": "2024-08-20 11:38:46.702",
+    "numberOfCampaigns": 31,
+    "numberOfCustomers": 22320370
+  },
+  {
+    "taskId": "1",
+    "tenantName": "ULVEGR",
+    "taskName": "prepare_stream_constraint",
+    "startDatetime": "2024-08-20 11:39:07.889",
+    "numberOfCampaigns": 31,
+    "numberOfCustomers": 22320370
+  },
+  {
+    "taskId": "2",
+    "tenantName": "ULVEGR",
+    "taskName": "prepare_past_campaigns_constraint",
+    "startDatetime": "2024-08-20 11:39:08.182",
+    "numberOfCampaigns": 31,
+    "numberOfCustomers": 22320370
+  }
+]
