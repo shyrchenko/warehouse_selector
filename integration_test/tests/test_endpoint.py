@@ -16,7 +16,7 @@ def test_endpoint(api_host: str, static_data_path: str):
       },
       {
         "taskId": "1",
-        "warehouseSize": "X-Large"
+        "warehouseSize": "Large"
       },
       {
         "taskId": "2",
