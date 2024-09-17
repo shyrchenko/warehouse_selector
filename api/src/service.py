@@ -1,17 +1,34 @@
 from typing import List
 
 from models import TaskData, WarehouseMapping, OutputModel
+from db.repository import ExecutionStatisticsRepository
+from db import create_session
 
 
 class WarehouseSelectorService:
-    @staticmethod
-    def _get_warehouse_type(task_data: TaskData) -> WarehouseMapping:
-        if task_data.task_name in ['exclude_and_filter_by_higher_today',  'filter_excluded_customers_by_past_and_recs']:
+    ACCEPTABLE_TIME_OF_EXECUTION = 20
+    COEFFICIENTS = [0.1, 0.15, 0.15, 0.2, 0.4]
+
+    def __init__(self):
+        self._execution_statistics = ExecutionStatisticsRepository(
+            session=create_session()
+        )
+
+    def _get_warehouse_type(self, task_data: TaskData) -> WarehouseMapping:
+        last_executions = self._execution_statistics.get_last_n_executions(task_data.task_name, 5)
+        durations = [statistic.duration for statistic in last_executions]
+        average = sum(map(lambda mapping: mapping[0] * mapping[1], zip(durations, self.COEFFICIENTS)))
+
+        fraction = average / self.ACCEPTABLE_TIME_OF_EXECUTION
+
+        if fraction < 1:
+            return WarehouseMapping.SMALL
+        elif fraction < 3:
             return WarehouseMapping.MEDIUM
-        elif task_data.task_name in ['prepare_customer_campaigns_settings', 'prepare_stream_constraint']:
+        elif fraction < 10:
             return WarehouseMapping.LARGE
         else:
-            return WarehouseMapping.SMALL
+            return WarehouseMapping.XLARGE
 
     def process_request(self, payload: List[TaskData]) -> List[OutputModel]:
         responses = []

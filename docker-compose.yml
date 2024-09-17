@@ -4,9 +4,20 @@ services:
       context: ./api/
     ports:
       - "5000:5000"
+    depends_on:
+      - ws-db
 
   ws-int-test:
     build:
       context: ./integration_test/
     depends_on:
       - ws-api
+
+  ws-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: sp_executions
+    volumes:
+      - ./db/execution_statistics.sql:/docker-entrypoint-initdb.d/init.sql
