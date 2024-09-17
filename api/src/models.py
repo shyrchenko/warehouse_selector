@@ -16,6 +16,7 @@ class WarehouseMapping(str, Enum):
     SMALL = 'X-Small'
     MEDIUM = 'Medium'
     LARGE = 'Large'
+    XLARGE = 'X-Large'
 
 
 class OutputModel(BaseModel):
